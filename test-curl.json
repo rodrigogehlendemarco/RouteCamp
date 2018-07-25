@@ -1,0 +1,79 @@
+request:
+
+curl --header "Content-Type:application/json" --data '{"vehicles":[{"id":0,"start":[2.3526,48.8604],"end":[2.3526,48.8604]}],"jobs":[{"id":0,"location":[2.3691,48.8532]},{"id":1,"location":[2.2911,48.8566]}],"options":{"g":true}}' http://solver.vroom-project.org
+
+
+response:
+
+{
+  "code": 0,
+  "summary": {
+    "cost": 1386,
+    "unassigned": 0,
+    "service": 0,
+    "distance": 14366,
+    "duration": 1385,
+    "computing_times": {
+      "loading": 4,
+      "solving": 0,
+      "routing": 1
+    }
+  },
+  "unassigned": [],
+  "routes": [
+    {
+      "vehicle": 0,
+      "cost": 1386,
+      "service": 0,
+      "distance": 14366,
+      "duration": 1385,
+      "steps": [
+        {
+          "type": "start",
+          "location": [
+            2.3526,
+            48.8604
+          ],
+          "arrival": 0,
+          "duration": 0,
+          "distance": 0
+        },
+        {
+          "type": "job",
+          "location": [
+            2.2911,
+            48.8566
+          ],
+          "job": 1,
+          "service": 0,
+          "arrival": 486,
+          "duration": 486,
+          "distance": 5706
+        },
+        {
+          "type": "job",
+          "location": [
+            2.3691,
+            48.8532
+          ],
+          "job": 0,
+          "service": 0,
+          "arrival": 1090,
+          "duration": 1090,
+          "distance": 12460
+        },
+        {
+          "type": "end",
+          "location": [
+            2.3526,
+            48.8604
+          ],
+          "arrival": 1385,
+          "duration": 1385,
+          "distance": 14365
+        }
+      ],
+      "geometry": "o`fiHaqjMBSPHh@T^PHDTLLHLFJFLFlBz@r@VXL\\NJDHDlCjAJDHDCPCNCNTvBLrAHx@BL?HFp@Oz@~Ap@BBRHPHtDhBHDJD@@bD~AnB~@JFFBLFFDDB|@`@PJTH`Ad@LFCHGZSpAO~@kApGQp@I\\?BSf@Yv@k@zAw@nBGPwBnDOTmBrCa@l@W\\}@`BWd@yB|E{@hBEJQpASvAQpASxAAP?DJtC@\\Ab@O~@aArGG\\UhAWlA_@fBOn@_B~GEREP]zAMh@Kb@gA|EMp@S|@Mp@aBdIADI\\GZEPMp@k@rCGXKf@yEvUQ|@I`@Ml@GXI^?BOr@Mr@CNYrAAT?XEh@Aj@@hNBx@@nA?JBdBBt@@h@?v@?RAFAr@@jDFr@D^LfAJ~@Dh@@`@@f@@J?p@BtCJnNBxD@`AF|L?L?`A?F?dA?NGb@?F?\\BbAF`A?D?HDhBFrALjBV|BD\\L~@X|A`@nB~@|C`AfCjAjBLXNXzAnCnCpEhBvCtCxEx@|@~@fAzAmC{AlCIm@{@_BcEyGQW]i@OWwGsKQW_AcB_@y@g@kA{@}Cc@qBYgBIi@QsAKiAMgBGiAEiB?I@u@IsAI_@AIKa@?O?eA?G?aA?MG}LAaACyDKoNCuC?q@AKAg@Aa@Ei@K_AMgAE_@Gs@AkD@s@@G?S?w@Ai@Cu@CeB?KAoACy@AiN@k@Di@Xi@ZwA@GJk@Pu@HWJSJMPU\\[JMNO|A}A\\[XWVUvCiC`@_@RQp@o@FGrBoBPQRQrAmAjAgAtAqAtBoB\\]bBeC~@{AHOH]HY~@gCFQFS~@mClAqGFa@BMbAiF\\yBXqBXiBXkBL{@BUJy@F[D[Fc@NaAJk@Jq@`@gCHc@BMLy@b@sCLu@BQDYN{@L_ABSd@{CFYFg@Ls@@GXkBF]RkAp@}EXgBBMn@cED[@ENcA@EPiAXsBV{ARwAD]ZsBL}@j@kDJu@PaADYDWHg@`@aCRyAF_@d@yCD]BiAFmDDeC@wAH{EDyABuBAeABuB?i@@qA?k@Kg@oBoJGWCMCKQ}@I_@Ou@I_@GUG[}@oECMEQe@eCKe@S}@EQEWy@sDgB{IEOKe@Q_AOs@WqAKi@YsA]_BKk@COGg@AM?KAOHgAFy@AQGYIWOQSKSAMBKDEBILEBKVEXAR?P@RBJBJBJDJLJTNIpAEj@IbAIfACZOxBe@`D?F[bBKp@CLERERu@fDCNGRCHc@bBCNENMd@[`A[~@Up@G`@Il@Mz@q@rEQnA[tBEVG\\c@vCCPCRc@tCStACPET_@fCQjACNQjAu@bFGMGGECuAq@IGIIm@m@eAkA{@{@KMIGgAiAIIENw@bDCDi@bCCJcAs@OMIImAoAEHWl@Sv@U`BCVQx@CL`Br@CR"
+    }
+  ]
+}
