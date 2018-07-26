@@ -2,6 +2,7 @@ $(document).ready(function() {
 
   //Variaveis globais
   var chaveAPI = 'nrXeeq9i2Hv2pcSIkAEyuEUrvmlT7PIa'; // API key MapQuest
+  var arrayGlobalEnderecos = [];
 
   // Funcao para ajax GET SÍNCRONO
   function callAjaxGET(url, callback) {
@@ -81,10 +82,14 @@ $(document).ready(function() {
       var jsonResponse = JSON.parse(response);
       var lng = jsonResponse.results[0].locations[0].latLng.lng;
       var lat = jsonResponse.results[0].locations[0].latLng.lat;
+      var stringEndereco = jsonResponse.results[0].providedLocation.location;
+      console.log(stringEndereco)
       // Longitude na posicao 0:
       coordenadas.push(lng);
       // Latitude na posicao 1;
       coordenadas.push(lat);
+      //String de endereco na posicao 2;
+      coordenadas.push(stringEndereco);
     });
     return coordenadas;
   };
@@ -156,6 +161,7 @@ $(document).ready(function() {
       var pais = divEndereco.find('.input-pais').val();
       var endereco = formataEndereco(rua, numero, cidade, pais);
       var coordenadas = buscaCoordenadas(endereco, chaveAPI);
+      var stringEndereco = coordenadas[2];
 
       //Cria objeto que representa endereco
       var objetoEndereco = {
@@ -164,6 +170,13 @@ $(document).ready(function() {
       }
 
       jsonData.jobs.push(objetoEndereco);
+
+      //Passa objeto para array global de enderecos
+      var objetoCoordenadasComEndereco = {
+        "coordenadas": coordenadas.slice(0,2),
+        "endereco": stringEndereco
+      }
+      arrayGlobalEnderecos.push(objetoCoordenadasComEndereco);
     })
 
     console.log(jsonData);
@@ -173,15 +186,27 @@ $(document).ready(function() {
       console.log("ROTEIRO:");
       var responseJson = JSON.parse(response);
       console.log(responseJson.routes[0].steps);
-      responseJson.routes[0].steps.forEach(step => {
-        console.log(step.type);
-        console.log(step.location);
-        console.log(step.job);
-        console.log(step.distance);
+      responseJson.routes[0].steps.forEach((step, index) => {
+        console.log(step.type); // Job, start ou end
+        console.log(step.location); // coordenadas
+        console.log(step.job); // ID
+        console.log(step.distance); // distancia em metros
+        if (step.type == "job") {
+          var arrayFiltro = arrayGlobalEnderecos.filter( function(item){return (item.coordenadas[0]==step.location[0] && item.coordenadas[1]==step.location[1]);} );
+          step.endereco = arrayFiltro[0].endereco;
+          console.log(step.endereco);
+
+          // Declara novo campo de rota
+          var novaRotaString = `<div class="col-12"> <div class="card"> <h5 class="card-header peach-gradient white-text text-center py-2"> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-3 col-lg-2 my-auto"> <p class="display-4">${index}</p></div><div class="col-9 col-lg-6 my-auto"> <p class="">${step.endereco}</p></div><div class="col-12 col-lg-4 my-auto"> <a href="" class="btn peach-gradient btn-lg" id="botao-partiu"><i class="fas fa-truck fa-2x mr-3"></i>PARTIU!</a> </div></div></form> </div></div></div>`;
+
+          var novaRota = $(novaRotaString);
+
+          $('#rota').append(novaRota);
+        }
       })
     });
 
-    //TODO: Implementar geracao de rota // EM CONSTRUCAO
+    //Implementar Embedding do google map
 
 
     var rota = $('#rota');
