@@ -78,7 +78,7 @@ $(document).ready(function() {
     var coordenadas = new Array();
     var url = "http://www.mapquestapi.com/geocoding/v1/address?key=" + chaveAPI + "&location=" + endereco;
 
-    callAjaxGET(url, function (response) {
+    callAjaxGET(url, function(response) {
       var jsonResponse = JSON.parse(response);
       var lng = jsonResponse.results[0].locations[0].latLng.lng;
       var lat = jsonResponse.results[0].locations[0].latLng.lat;
@@ -125,6 +125,18 @@ $(document).ready(function() {
     var LngPartida = coordenadasPartida[0];
     var LatPartida = coordenadasPartida[1];
 
+    //Centraliza mapa sobre as coordenadas de Partida
+    var mymap = L.map('mapid').setView([LatPartida, LngPartida], 13);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1Ijoicm9kcmlnb2dkZW1hcmNvIiwiYSI6ImNqazJ6aGFhNzBkamYzcnRoaHN0MGsweXcifQ.esOIBfSZx5tNYtDxwXUpDA'
+    }).addTo(mymap);
+
+    var markerPartida = L.marker([LatPartida, LngPartida]).addTo(mymap);
+    markerPartida.bindPopup("Ponto de Partida").openPopup();
+
     jsonData.vehicles[0].start = coordenadasPartida;
 
     var LngChegada = undefined;
@@ -154,7 +166,7 @@ $(document).ready(function() {
     //Itera sobre os enderecos
     $('.endereco').each(function(index) {
       console.log(index);
-      var divEndereco = $( this );
+      var divEndereco = $(this);
       var rua = divEndereco.find('.input-endereco').val();
       var numero = divEndereco.find('.input-numero').val();
       var cidade = divEndereco.find('.input-cidade').val();
@@ -165,15 +177,15 @@ $(document).ready(function() {
 
       //Cria objeto que representa endereco
       var objetoEndereco = {
-         "id":index,
-         "location":coordenadas
+        "id": index,
+        "location": coordenadas
       }
 
       jsonData.jobs.push(objetoEndereco);
 
       //Passa objeto para array global de enderecos
       var objetoCoordenadasComEndereco = {
-        "coordenadas": coordenadas.slice(0,2),
+        "coordenadas": coordenadas.slice(0, 2),
         "endereco": stringEndereco
       }
       arrayGlobalEnderecos.push(objetoCoordenadasComEndereco);
@@ -192,9 +204,14 @@ $(document).ready(function() {
         console.log(step.job); // ID
         console.log(step.distance); // distancia em metros
         if (step.type == "job") {
-          var arrayFiltro = arrayGlobalEnderecos.filter( function(item){return (item.coordenadas[0]==step.location[0] && item.coordenadas[1]==step.location[1]);} );
+          var arrayFiltro = arrayGlobalEnderecos.filter(function(item) {
+            return (item.coordenadas[0] == step.location[0] && item.coordenadas[1] == step.location[1]);
+          });
           step.endereco = arrayFiltro[0].endereco;
           console.log(step.endereco);
+
+          //Plota ponto no mapa
+          L.marker([step.location[1], step.location[0]]).addTo(mymap).bindPopup(`${index}. - ${step.endereco}`);
 
           var mapStringEndereco = step.endereco.replace(/ /g, '+');
           var mapStringEnderecoGoogle = "https://www.google.com/maps/search/?api=1&query=" + mapStringEndereco;
@@ -219,8 +236,8 @@ $(document).ready(function() {
     }
     //Scroll ate a rota
     $('html, body').animate({
-    scrollTop: rota.offset().top - 75
-  }, 800)
+      scrollTop: rota.offset().top - 75
+    }, 800)
 
   });
 
@@ -241,14 +258,14 @@ $(document).ready(function() {
 
   })
 
-  $(document).on('click', '.excluir', function(){
+  $(document).on('click', '.excluir', function() {
     $(this).parent().parent().parent().parent().remove();
   });
 
   $('#botao-comecar').click(() => {
     $('html, body').animate({
-    scrollTop: $("#partida").offset().top - 75
-  }, 800)
+      scrollTop: $("#partida").offset().top - 75
+    }, 800)
   });
 
 });
