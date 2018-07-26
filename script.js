@@ -128,6 +128,13 @@ $(document).ready(function() {
 
     console.log(jsonData);
 
+    //Itera sobre os enderecos
+    $('.endereco').each(function(index) {
+      console.log(index);
+      var divEndereco = $( this );
+      console.log(divEndereco.find('.input-endereco').val());
+    })
+
     //TODO: Implementar geracao de rota // EM CONSTRUCAO
 
 
