@@ -3,8 +3,8 @@ $(document).ready(function() {
   //Variaveis globais
   var chaveAPI = 'nrXeeq9i2Hv2pcSIkAEyuEUrvmlT7PIa'; // API key MapQuest
 
-  // Funcao para ajax SÍNCRONO
-  function callAjax(url, callback) {
+  // Funcao para ajax GET SÍNCRONO
+  function callAjaxGET(url, callback) {
     var xmlhttp;
     // compatible with IE7+, Firefox, Chrome, Opera, Safari
     xmlhttp = new XMLHttpRequest();
@@ -15,6 +15,23 @@ $(document).ready(function() {
     }
     xmlhttp.open("GET", url, false);
     xmlhttp.send();
+  }
+
+  // Funcao para ajax POST SÍNCRONO
+  function callAjaxPOST(JSONdata, callback) {
+    var xmlhttp;
+    var requestURL = 'http://solver.vroom-project.org';
+    // compatible with IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", requestURL, false);
+    xmlhttp.setRequestHeader('Content-type', 'application/json');
+
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        callback(xmlhttp.responseText);
+      }
+    }
+    xmlhttp.send(JSON.stringify(JSONdata));
   }
 
   //Funcao q checa se existe um atributo
@@ -60,7 +77,7 @@ $(document).ready(function() {
     var coordenadas = new Array();
     var url = "http://www.mapquestapi.com/geocoding/v1/address?key=" + chaveAPI + "&location=" + endereco;
 
-    callAjax(url, function (response) {
+    callAjaxGET(url, function (response) {
       var jsonResponse = JSON.parse(response);
       var lng = jsonResponse.results[0].locations[0].latLng.lng;
       var lat = jsonResponse.results[0].locations[0].latLng.lat;
@@ -76,6 +93,7 @@ $(document).ready(function() {
 
     //TODO: Checar se algum endereco foi criado
 
+    // Esqueleto do JSON a ser enviado
     var jsonData = {
       "vehicles": [{
         "id": 0,
@@ -132,18 +150,49 @@ $(document).ready(function() {
     $('.endereco').each(function(index) {
       console.log(index);
       var divEndereco = $( this );
-      console.log(divEndereco.find('.input-endereco').val());
+      var rua = divEndereco.find('.input-endereco').val();
+      var numero = divEndereco.find('.input-numero').val();
+      var cidade = divEndereco.find('.input-cidade').val();
+      var pais = divEndereco.find('.input-pais').val();
+      var endereco = formataEndereco(rua, numero, cidade, pais);
+      var coordenadas = buscaCoordenadas(endereco, chaveAPI);
+
+      //Cria objeto que representa endereco
+      var objetoEndereco = {
+         "id":index,
+         "location":coordenadas
+      }
+
+      jsonData.jobs.push(objetoEndereco);
     })
+
+    console.log(jsonData);
+
+    //Envia para API de roteirizacao
+    callAjaxPOST(jsonData, function(response) {
+      console.log("ROTEIRO:");
+      var responseJson = JSON.parse(response);
+      console.log(responseJson.routes[0].steps);
+      responseJson.routes[0].steps.forEach(step => {
+        console.log(step.type);
+        console.log(step.location);
+        console.log(step.job);
+        console.log(step.distance);
+      })
+    });
 
     //TODO: Implementar geracao de rota // EM CONSTRUCAO
 
 
     var rota = $('#rota');
     var partiu = $('#partiu');
-
     if (rota.hasClass('d-none')) {
       rota.removeClass('d-none');
     }
+    //Scroll ate a rota
+    $('html, body').animate({
+    scrollTop: rota.offset().top - 75
+  }, 800)
 
   });
 
