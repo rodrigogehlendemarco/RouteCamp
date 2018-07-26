@@ -159,6 +159,14 @@ $(document).ready(function() {
       LngChegada = coordenadasChegada[0];
       LatChegada = coordenadasChegada[1];
       jsonData.vehicles[0].end = coordenadasChegada;
+
+      var stringEnderecoChegada = coordenadasChegada[2];
+      //Passa objeto para array global de enderecos
+      var objetoCoordenadasComEnderecoChegada = {
+        "coordenadas": coordenadasChegada.slice(0, 2),
+        "endereco": stringEnderecoChegada
+      }
+      arrayGlobalEnderecos.push(objetoCoordenadasComEnderecoChegada);
     }
 
     console.log(jsonData);
@@ -203,7 +211,7 @@ $(document).ready(function() {
         console.log(step.location); // coordenadas
         console.log(step.job); // ID
         console.log(step.distance); // distancia em metros
-        if (step.type == "job") {
+        if (step.type == "job" || step.type == "end" && !inputSwitch.is(':checked')) {
           var arrayFiltro = arrayGlobalEnderecos.filter(function(item) {
             return (item.coordenadas[0] == step.location[0] && item.coordenadas[1] == step.location[1]);
           });
@@ -212,6 +220,10 @@ $(document).ready(function() {
 
           //Plota ponto no mapa
           L.marker([step.location[1], step.location[0]]).addTo(mymap).bindPopup(`${index}. - ${step.endereco}`);
+
+          if (step.type == "end" && !inputSwitch.is(':checked')) {
+            L.marker([step.location[1], step.location[0]]).addTo(mymap).bindPopup("Ponto de Chegada");
+          }
 
           var mapStringEndereco = step.endereco.replace(/ /g, '+');
           var mapStringEnderecoGoogle = "https://www.google.com/maps/search/?api=1&query=" + mapStringEndereco;
