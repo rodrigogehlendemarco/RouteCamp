@@ -3,7 +3,19 @@ $(document).ready(function() {
   //Variaveis globais
   var chaveAPI = 'nrXeeq9i2Hv2pcSIkAEyuEUrvmlT7PIa'; // API key MapQuest
 
-
+  // Funcao para ajax SÍNCRONO
+  function callAjax(url, callback) {
+    var xmlhttp;
+    // compatible with IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        callback(xmlhttp.responseText);
+      }
+    }
+    xmlhttp.open("GET", url, false);
+    xmlhttp.send();
+  }
 
   //Funcao q checa se existe um atributo
   $.fn.hasAttr = function(name) {
@@ -45,28 +57,36 @@ $(document).ready(function() {
   }
   //Funcao para buscar array de coordenadas pelo Endereco
   function buscaCoordenadas(endereco, chaveAPI) {
-    $.ajax({
-      url: "http://www.mapquestapi.com/geocoding/v1/address?key=" + chaveAPI + "&location=" + endereco,
-      success: function(result) {
-        console.log(result);
-        var lng = result.results[0].locations[0].latLng.lng;
-        var lat = result.results[0].locations[0].latLng.lat;
-        console.log(lng);
-        console.log(lat);
-        var coordenadas = [];
-        // Longitude na posicao 0:
-        coordenadas.push(lng);
-        // Latitude na posicao 1;
-        coordenadas.push(lat);
-        console.log(coordenadas);
-        return coordenadas;
-      }
+    var coordenadas = new Array();
+    var url = "http://www.mapquestapi.com/geocoding/v1/address?key=" + chaveAPI + "&location=" + endereco;
+
+    callAjax(url, function (response) {
+      var jsonResponse = JSON.parse(response);
+      var lng = jsonResponse.results[0].locations[0].latLng.lng;
+      var lat = jsonResponse.results[0].locations[0].latLng.lat;
+      // Longitude na posicao 0:
+      coordenadas.push(lng);
+      // Latitude na posicao 1;
+      coordenadas.push(lat);
     });
+    return coordenadas;
   };
 
   $('#gerar-rota').click(() => {
 
     //TODO: Checar se algum endereco foi criado
+
+    var jsonData = {
+      "vehicles": [{
+        "id": 0,
+        "start": [],
+        "end": []
+      }],
+      "jobs": [],
+      "options": {
+        "g": true
+      }
+    };
 
     //Pega coordenadas de partida
     var divPartida = $('#partida');
@@ -82,6 +102,8 @@ $(document).ready(function() {
     var LngPartida = coordenadasPartida[0];
     var LatPartida = coordenadasPartida[1];
 
+    jsonData.vehicles[0].start = coordenadasPartida;
+
     var LngChegada = undefined;
     var LatChegada = undefined;
 
@@ -90,6 +112,7 @@ $(document).ready(function() {
     if (inputSwitch.is(':checked')) {
       LngChegada = coordenadasPartida[0];
       LatChegada = coordenadasPartida[1];
+      jsonData.vehicles[0].end = coordenadasPartida;
     } else {
       var divChegada = $('#chegada');
       var ruaChegada = divChegada.find('.input-endereco').val();
@@ -100,8 +123,10 @@ $(document).ready(function() {
       var coordenadasChegada = buscaCoordenadas(enderecoChegada, chaveAPI);
       LngChegada = coordenadasChegada[0];
       LatChegada = coordenadasChegada[1];
+      jsonData.vehicles[0].end = coordenadasChegada;
     }
 
+    console.log(jsonData);
 
     //TODO: Implementar geracao de rota // EM CONSTRUCAO
 
