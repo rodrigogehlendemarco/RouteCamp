@@ -196,8 +196,11 @@ $(document).ready(function() {
           step.endereco = arrayFiltro[0].endereco;
           console.log(step.endereco);
 
+          var mapStringEndereco = step.endereco.replace(/ /g, '+');
+          var mapStringEnderecoGoogle = "https://www.google.com/maps/search/?api=1&query=" + mapStringEndereco;
+
           // Declara novo campo de rota
-          var novaRotaString = `<div class="col-12"> <div class="card"> <h5 class="card-header peach-gradient white-text text-center py-2"> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-3 col-lg-2 my-auto"> <p class="display-4">${index}</p></div><div class="col-9 col-lg-6 my-auto"> <p class="">${step.endereco}</p></div><div class="col-12 col-lg-4 my-auto"> <a href="" class="btn peach-gradient btn-lg" id="botao-partiu"><i class="fas fa-truck fa-2x mr-3"></i>PARTIU!</a> </div></div></form> </div></div></div>`;
+          var novaRotaString = `<div class="col-12"> <div class="card"> <h5 class="card-header peach-gradient white-text text-center py-2"> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-3 col-lg-2 my-auto"> <p class="display-4">${index}</p></div><div class="col-9 col-lg-6 my-auto"> <p class="">${step.endereco}</p></div><div class="col-12 col-lg-4 my-auto"> <a target="_blank" rel="noopener noreferrer" href="${mapStringEnderecoGoogle}" class="btn peach-gradient btn-lg" id="botao-partiu"><i class="fas fa-truck fa-2x mr-3"></i>PARTIU!</a> </div></div></form> </div></div></div>`;
 
           var novaRota = $(novaRotaString);
 
