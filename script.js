@@ -26,7 +26,7 @@ $(document).ready(function() {
 
     // Declara novo campo de endereco
     var novoEndereco = $(
-      '<div class="row mt-5 mb-5 endereco"> <div class="col-12"> <div class="card"> <h5 class="card-header info-color white-text text-center py-4"> <strong>Endereço</strong> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-endereco"> <label>Endereço</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-numero"> <label>Número</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-cidade" value="Joinville"> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-pais" value="Brasil"> </div></div></div></form> </div></div></div></div>'
+      '<div class="row mt-5 mb-5 endereco"> <div class="col-12"> <div class="card"> <h5 class="card-header info-color white-text text-center py-4"> <strong>Endereço</strong> <span class="excluir" style="cursor: pointer;">[x]</span> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-endereco"> <label>Endereço</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-numero"> <label>Número</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-cidade" value="Joinville"> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-pais" value="Brasil"> </div></div></div></form> </div></div></div></div>'
     );
 
     //Adiciona campo de endereco acima dos botoes
@@ -156,5 +156,15 @@ $(document).ready(function() {
     }
 
   })
+
+  $(document).on('click', '.excluir', function(){
+    $(this).parent().parent().parent().parent().remove();
+  });
+
+  $('#botao-comecar').click(() => {
+    $('html, body').animate({
+    scrollTop: $("#partida").offset().top - 75
+  }, 800)
+  });
 
 });
