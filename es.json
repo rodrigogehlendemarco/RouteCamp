@@ -1,0 +1,23 @@
+{
+  "page_title": "Home - Routecamp",
+  "subtitle": "Optimización de rutas de entrega",
+  "get_started": "¡Empezar!",
+  "start_point": "Punto de Partida",
+  "address": "Dirección",
+  "number": "Número",
+  "city": "Ciudad",
+  "country": "País",
+  "start_is_end_point_question": "¿El punto de partida es el mismo que el de llegada?",
+  "no": "No",
+  "yes": "Sí",
+  "end_point": "Punto de Llegada",
+  "add_address": "Añadir dirección",
+  "generate_route": "¡Generar ruta!",
+  "your_route": "Tu ruta",
+  "address_label": "Dirección",
+  "start_point_popup": "Punto de Partida",
+  "end_point_popup": "Punto de Llegada",
+  "lets_go": "¡VAMOS!",
+  "default_city": "Joinville",
+  "default_country": "Brasil"
+}

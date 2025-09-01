@@ -1,0 +1,23 @@
+{
+  "page_title": "Home - Routecamp",
+  "subtitle": "Delivery route optimization",
+  "get_started": "Get Started!",
+  "start_point": "Starting Point",
+  "address": "Address",
+  "number": "Number",
+  "city": "City",
+  "country": "Country",
+  "start_is_end_point_question": "Is the starting point the same as the end point?",
+  "no": "No",
+  "yes": "Yes",
+  "end_point": "End Point",
+  "add_address": "Add address",
+  "generate_route": "Generate route!",
+  "your_route": "Your route",
+  "address_label": "Address",
+  "start_point_popup": "Starting Point",
+  "end_point_popup": "End Point",
+  "lets_go": "LET'S GO!",
+  "default_city": "Joinville",
+  "default_country": "Brazil"
+}
