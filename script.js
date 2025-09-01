@@ -1,4 +1,8 @@
 $(document).ready(function() {
+  // Initialize the internationalization module
+  if (window.initI18n) {
+    window.initI18n();
+  }
 
   //Variaveis globais
   var arrayGlobalEnderecos = [];
@@ -43,7 +47,7 @@ $(document).ready(function() {
 
     // Declara novo campo de endereco
     var novoEndereco = $(
-      '<div class="row mt-5 mb-5 endereco"> <div class="col-12"> <div class="card"> <h5 class="card-header info-color white-text text-center py-4"> <strong>Endereço</strong> <span class="excluir" style="cursor: pointer;">[x]</span> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-endereco"> <label>Endereço</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-numero"> <label>Número</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-cidade" value="Joinville"> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-pais" value="Brasil"> </div></div></div></form> </div></div></div></div>'
+      `<div class="row mt-5 mb-5 endereco"> <div class="col-12"> <div class="card"> <h5 class="card-header info-color white-text text-center py-4"> <strong>${getTranslation('address_label')}</strong> <span class="excluir" style="cursor: pointer;">[x]</span> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-endereco"> <label>${getTranslation('address')}</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-numero"> <label>${getTranslation('number')}</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-cidade"> <label>${getTranslation('city')}</label> </div></div><div class="col-6"> <div class="md-form"> <input type="text" class="form-control input-pais"> <label>${getTranslation('country')}</label> </div></div></div></form> </div></div></div></div>`
     );
 
     //Adiciona campo de endereco acima dos botoes
@@ -134,7 +138,7 @@ $(document).ready(function() {
     }).addTo(mymap);
 
     var markerPartida = L.marker([LatPartida, LngPartida]).addTo(mymap);
-    markerPartida.bindPopup("Ponto de Partida").openPopup();
+    markerPartida.bindPopup(getTranslation('start_point_popup')).openPopup();
 
     jsonData.vehicles[0].start = coordenadasPartida;
 
@@ -221,14 +225,14 @@ $(document).ready(function() {
           L.marker([step.location[1], step.location[0]]).addTo(mymap).bindPopup(`${index}. - ${step.endereco}`);
 
           if (step.type == "end" && !inputSwitch.is(':checked')) {
-            L.marker([step.location[1], step.location[0]]).addTo(mymap).bindPopup("Ponto de Chegada");
+            L.marker([step.location[1], step.location[0]]).addTo(mymap).bindPopup(getTranslation('end_point_popup'));
           }
 
           var mapStringEndereco = step.endereco.replace(/ /g, '+');
           var mapStringEnderecoGoogle = "https://www.google.com/maps/search/?api=1&query=" + mapStringEndereco;
 
           // Declara novo campo de rota
-          var novaRotaString = `<div class="col-12"> <div class="card"> <h5 class="card-header peach-gradient white-text text-center py-2"> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-3 col-lg-2 my-auto"> <p class="display-4">${index}</p></div><div class="col-9 col-lg-6 my-auto"> <p class="">${step.endereco}</p></div><div class="col-12 col-lg-4 my-auto"> <a target="_blank" rel="noopener noreferrer" href="${mapStringEnderecoGoogle}" class="btn peach-gradient btn-lg" id="botao-partiu"><i class="fas fa-truck fa-2x mr-3"></i>PARTIU!</a> </div></div></form> </div></div></div>`;
+          var novaRotaString = `<div class="col-12"> <div class="card"> <h5 class="card-header peach-gradient white-text text-center py-2"> </h5> <div class="card-body px-lg-5 pt-0"> <form class="text-center" style="color: #757575;"> <div class="row"> <div class="col-3 col-lg-2 my-auto"> <p class="display-4">${index}</p></div><div class="col-9 col-lg-6 my-auto"> <p class="">${step.endereco}</p></div><div class="col-12 col-lg-4 my-auto"> <a target="_blank" rel="noopener noreferrer" href="${mapStringEnderecoGoogle}" class="btn peach-gradient btn-lg" id="botao-partiu"><i class="fas fa-truck fa-2x mr-3"></i>${getTranslation('lets_go')}</a> </div></div></form> </div></div></div>`;
 
           var novaRota = $(novaRotaString);
 

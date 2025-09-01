@@ -1,0 +1,23 @@
+{
+  "page_title": "Home - Routecamp",
+  "subtitle": "Roteirização de entregas",
+  "get_started": "Começar!",
+  "start_point": "Ponto de Partida",
+  "address": "Endereço",
+  "number": "Número",
+  "city": "Cidade",
+  "country": "País",
+  "start_is_end_point_question": "Ponto de partida é o mesmo da chegada?",
+  "no": "Não",
+  "yes": "Sim",
+  "end_point": "Ponto de Chegada",
+  "add_address": "Adicionar endereço",
+  "generate_route": "Gerar rota!",
+  "your_route": "Sua rota",
+  "address_label": "Endereço",
+  "start_point_popup": "Ponto de Partida",
+  "end_point_popup": "Ponto de Chegada",
+  "lets_go": "PARTIU!",
+  "default_city": "Joinville",
+  "default_country": "Brasil"
+}
