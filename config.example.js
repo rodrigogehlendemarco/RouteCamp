@@ -1,0 +1,1 @@
+var chaveAPI = 'YOUR_MAPQUEST_API_KEY';
