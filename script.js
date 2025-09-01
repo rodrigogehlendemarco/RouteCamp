@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
   //Variaveis globais
-  var chaveAPI = 'nrXeeq9i2Hv2pcSIkAEyuEUrvmlT7PIa'; // API key MapQuest
   var arrayGlobalEnderecos = [];
 
   // Funcao para ajax GET SÍNCRONO
